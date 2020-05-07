@@ -7,7 +7,7 @@ license = "MIT"
 include = [ "nixops_grafana/nix/*.nix" ]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.7.6"
 grafana_api = "1.0.1"
 grafanalib = "0.5.6"
 nixops = {git = "https://github.com/NixOS/nixops.git", rev = "master"}
