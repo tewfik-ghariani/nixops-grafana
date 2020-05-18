@@ -4,7 +4,10 @@
   resources =
     { evalResources, zipAttrs, resourcesByType, ...}:
     {
-      grafanaAlerts = evalResources ./grafana-alert.nix (zipAttrs resourcesByType.grafanaAlerts or []);
       grafanaDashboards = evalResources ./grafana-dashboard.nix (zipAttrs resourcesByType.grafanaDashboards or []);
+      grafanaDataSources = evalResources ./grafana-data-source.nix (zipAttrs resourcesByType.grafanaDataSources or []);
+      grafanaFolders = evalResources ./grafana-folder.nix (zipAttrs resourcesByType.grafanaFolders or []);
+      grafanaNotificationChannels = evalResources ./grafana-notification-channel.nix (zipAttrs resourcesByType.grafanaNotificationChannels or []);
+      grafanaOrganizations = evalResources ./grafana-organization.nix (zipAttrs resourcesByType.grafanaOrganizations or []);
     };
 }

@@ -12,22 +12,12 @@ with lib;
       '';
     };
 
-    grafanaHost = mkOption {
-      default = "grafana.com";
-      example = "grafana.prod.nixos.come";
+    host = mkOption {
+      example = "grafana.nixos.com";
       type = types.str;
       description = ''
         The URL of the Grafana installation
         This is required to contact your corresponding API
-      ''
-    };
-
-    organization = mkOption {
-      default = "";
-      example = "nixos-organization";
-      type = types.str;
-      description = ''
-        The name of the organization in Grafana
       '';
     };
 

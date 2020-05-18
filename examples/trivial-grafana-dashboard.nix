@@ -7,9 +7,9 @@
   resources.grafanaDashboards.firstGrafanaDashboard =
     {
       inherit apiToken;
-      dashboardId = "";
-      grafanaHost = "grafana.monocle.infor.com";
-      title = "First Testing Dashboard";
+      host = "grafana.monocle.infor.com";
+      title = "First nixops Dashboard";
+      config_json = "dashboard.json";
     };
     resources.commandOutput.test =  
     {

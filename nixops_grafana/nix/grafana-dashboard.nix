@@ -1,6 +1,6 @@
 { config, lib, uuid, name, ... }:
 
-with lib
+with lib;
 
 {
 
@@ -8,7 +8,7 @@ with lib
 
   options = {
 
-    dashboardId = mkOption {
+    id = mkOption {
       example = "9619";
       default = "";
       type = types.str;
@@ -19,7 +19,7 @@ with lib
       '';
     };
 
-    dashboardUid = mkOption {
+    uid = mkOption {
       example = "cIBgcSjkk";
       default = "";
       type = types.str;
@@ -46,6 +46,15 @@ with lib
         Tags associated to the dashboard
       '';
     };
+
+    config_json = mkOption {
+      example = "dashboard.json";
+      type = types.str;
+      description = ''
+        Tags associated to the dashboard
+      '';
+    };
+
 
   };
 

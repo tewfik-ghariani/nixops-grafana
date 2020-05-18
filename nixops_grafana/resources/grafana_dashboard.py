@@ -27,7 +27,7 @@ from grafanalib.core import (
 
 class GrafanaDashboardOptions(nixops.resources.ResourceOptions):
     apiToken: str
-    grafanaHost: str
+    host: str
 
 
 class GrafanaDashboardDefinition(nixops.resources.ResourceDefinition):
@@ -36,7 +36,7 @@ class GrafanaDashboardDefinition(nixops.resources.ResourceDefinition):
     config: GrafanaDashboardOptions
 
     api_token : str
-    grafana_host : str
+    host : str
 
     @classmethod
     def get_type(cls):
@@ -52,7 +52,7 @@ class GrafanaDashboardDefinition(nixops.resources.ResourceDefinition):
     def __init__(self, name: str, config:nixops.resources.ResourceEval):
         super().__init__(name, config)
         self.api_token = config.apiToken
-        self.grafana_host = config.grafanaHost
+        self.host = config.host
 
 
 class GrafanaDashboardState(nixops.resources.ResourceState):
