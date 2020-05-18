@@ -1,9 +1,34 @@
-{ config, lib, uuid, name, ...}:
+{ config, lib, uuid, name, ... }:
 
 with lib
 
 {
-  options = (import ./common-grafana-options.nix ) // {
+
+  imports = [ ./common-grafana-options.nix ];
+
+  options = {
+
+    dashboardId = mkOption {
+      example = "9619";
+      default = "";
+      type = types.str;
+      description = ''
+        The identifier of a dashboard. Only unique per Grafana install.
+        It is a numeric value generated in an auto-incrementing fashion.
+        Should be left empty to create a new dashboard
+      '';
+    };
+
+    dashboardUid = mkOption {
+      example = "cIBgcSjkk";
+      default = "";
+      type = types.str;
+      description = ''
+        A unique identifier of a dashboard across all Grafana organizations.
+        Automatically generated if not provided when creating a dashboard.
+        Should be left empty to create a new dashboard
+      '';
+    };
 
     title = mkOption {
       example = "Operations Super Dashboard";
@@ -13,6 +38,14 @@ with lib
       '';
     };
 
+    tags = mkOption {
+      default = [ ];
+      example = [ "random" "tags" ];
+      type = types.listOf types.str;
+      description = ''
+        Tags associated to the dashboard
+      '';
+    };
 
   };
 
