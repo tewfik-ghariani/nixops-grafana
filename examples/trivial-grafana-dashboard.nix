@@ -1,21 +1,21 @@
 { 
   organization ? ""
 , apiToken ? ""
+, host ? "grafana.monocle.com"
 , ...
 }:
 {
-  resources.grafanaDashboards.firstGrafanaDashboard =
+  resources.grafanaFolders.parent-folder =
     {
-      inherit apiToken;
-      host = "grafana.monocle.infor.com";
-      title = "First nixops Dashboard";
-      config_json = "dashboard.json";
+      inherit apiToken host;
+      title = "Nixops Folder";
     };
-    resources.commandOutput.test =  
+  resources.grafanaDashboards.first-grafana-dashboard =
+    { resources, ... }:
     {
-      script = ''
-        #!/bin/sh
-        echo -n '"12345"'
-      '';
+      inherit apiToken host;
+      title = "First nixops Dashboard";
+      folder = resources.grafanaFolders.parent-folder;
+      #configJson = dashboard.json;
     };
 }
