@@ -21,5 +21,15 @@ with lib;
       '';
     };
 
+    protocol = mkOption {
+      example = "https";
+      default = "https";
+      type = types.str;
+      description = ''
+        The HTTP protocol to be using while submitting requests to the Grafana Host
+        Either "http" or "https"
+      '';
+    };
   };
+
 }

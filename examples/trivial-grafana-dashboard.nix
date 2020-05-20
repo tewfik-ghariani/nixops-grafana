@@ -14,8 +14,9 @@
     { resources, ... }:
     {
       inherit apiToken host;
-      title = "First nixops Dashboard";
-      folder = resources.grafanaFolders.parent-folder;
-      #configJson = dashboard.json;
+      #folder = resources.grafanaFolders.parent-folder;
+      #folder = 9900;
+      #template = "/home/tewfikghariani/repositories/nix-community/nixops-grafana/examples/empty_dashboard.json";
+      template = "/data/grafana_templates/operations_dashboard.json";
     };
 }
