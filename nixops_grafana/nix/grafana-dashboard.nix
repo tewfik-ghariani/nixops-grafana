@@ -42,7 +42,7 @@ with import <nixops/lib.nix> lib;
 
     tags = mkOption {
       example = [ "random" "tags" ];
-      default = [ ];
+      default = [];
       type = types.listOf types.str;
       description = ''
         Tags associated to the dashboard

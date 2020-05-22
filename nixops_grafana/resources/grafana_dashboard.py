@@ -1,17 +1,11 @@
 # -*- coding: utf-8 -*-
 
 import json
-import nixops.util
-import nixops.resources
-from nixops.state import RecordId
 
 from typing import (
     Optional,
-    Dict,
     List,
-    Generator,
     Union,
-    Callable,
 )
 
 from grafana_api.grafana_face import GrafanaFace
@@ -38,6 +32,12 @@ from grafanalib.core import (
     YAxes,
     YAxis,
 )
+
+import nixops.util
+import nixops.resources
+from nixops.state import RecordId
+
+from nixops_grafana import grafana_utils
 
 
 class GrafanaDashboardOptions(nixops.resources.ResourceOptions):
@@ -79,7 +79,7 @@ class GrafanaDashboardState(nixops.resources.ResourceState[GrafanaDashboardDefin
     dashboard_id = nixops.util.attr_property("dashboardId", None, int)
     uid = nixops.util.attr_property("uid", None)
     title = nixops.util.attr_property("title", None)
-    tags = nixops.util.attr_property("tags", {}, "json")
+    tags = nixops.util.attr_property("tags", [], "json")
     folder = nixops.util.attr_property("folder", None, int)
     template = nixops.util.attr_property("template", None)
 
@@ -103,18 +103,14 @@ class GrafanaDashboardState(nixops.resources.ResourceState[GrafanaDashboardDefin
         # host + uid
         return self.uid
 
-    def connect(
-        self, api_token: str, host: str, protocol: Union["http", "https"] = "https"
-    ):
-        self.grafana_api = GrafanaFace(auth=api_token, host=host, protocol=protocol)
-        return
-
     def create(self, defn, check, allow_reboot, allow_recreate):
         if self._exists():
             if defn.config.uid and self.uid != defn.config.uid:
                 raise Exception("Cannot update the uid of a dashboard.")
 
-        self.connect(api_token=defn.config.apiToken, host=defn.config.host)
+        grafana_api = grafana_utils.connect(
+            api_token=defn.config.apiToken, host=defn.config.host
+        )
         # Update using the json template regardless?
         self.log("Creating/Updating grafana dashboard..")
 
@@ -144,7 +140,7 @@ class GrafanaDashboardState(nixops.resources.ResourceState[GrafanaDashboardDefin
 
         try:
             # Create or update a dashboard
-            dashboard_info = self.grafana_api.dashboard.update_dashboard(
+            dashboard_info = grafana_api.dashboard.update_dashboard(
                 dashboard={
                     "dashboard": template,
                     "folderId": folder,
@@ -181,11 +177,9 @@ class GrafanaDashboardState(nixops.resources.ResourceState[GrafanaDashboardDefin
         if not self.uid:
             self.state = self.MISSING
             return
-        self.connect(api_token=self.api_token, host=self.host)
+        grafana_api = grafana_utils.connect(api_token=self.api_token, host=self.host)
         try:
-            dashboard_info = self.grafana_api.dashboard.get_dashboard(
-                dashboard_uid=self.uid
-            )
+            dashboard_info = grafana_api.dashboard.get_dashboard(dashboard_uid=self.uid)
             if dashboard_info["dashboard"]["uid"] == self.uid:
                 self.state = self.UP
                 self.title = dashboard_info["dashboard"]["title"]
@@ -194,9 +188,9 @@ class GrafanaDashboardState(nixops.resources.ResourceState[GrafanaDashboardDefin
         return
 
     def _destroy(self):
-        self.connect(api_token=self.api_token, host=self.host)
+        grafana_api = grafana_utils.connect(api_token=self.api_token, host=self.host)
         try:
-            self.grafana_api.dashboard.delete_dashboard(dashboard_uid=self.uid)
+            grafana_api.dashboard.delete_dashboard(dashboard_uid=self.uid)
         except GrafanaClientError:
             self.log("The dashboard seems to have already been deleted..")
         except Exception:

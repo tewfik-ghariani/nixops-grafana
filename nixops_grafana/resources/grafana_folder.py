@@ -1,23 +1,18 @@
 # -*- coding: utf-8 -*-
 
-import nixops.util
-import nixops.resources
-from nixops.state import RecordId
-
-from typing import (
-    Optional,
-    Dict,
-    List,
-    Generator,
-    Union,
-    Callable,
-)
+from typing import Optional
 
 from grafana_api.grafana_face import GrafanaFace
 from grafana_api.grafana_api import (
     GrafanaBadInputError,
     GrafanaClientError,
 )
+
+import nixops.util
+import nixops.resources
+from nixops.state import RecordId
+
+from nixops_grafana import grafana_utils
 
 
 class GrafanaFolderOptions(nixops.resources.ResourceOptions):
@@ -77,12 +72,6 @@ class GrafanaFolderState(nixops.resources.ResourceState[GrafanaFolderDefinition]
         # host + uid
         return self.uid
 
-    def connect(
-        self, api_token: str, host: str, protocol: Union["http", "https"] = "https"
-    ):
-        self.grafana_api = GrafanaFace(auth=api_token, host=host, protocol=protocol)
-        return
-
     def create(self, defn, check, allow_reboot, allow_recreate):
         if self._exists():
             if defn.config.uid and self.uid != defn.config.uid:
@@ -102,9 +91,11 @@ class GrafanaFolderState(nixops.resources.ResourceState[GrafanaFolderDefinition]
                 if self.depl.logger.confirm(
                     "are you sure you want to update the Folder title ?"
                 ):
-                    self.connect(api_token=self.api_token, host=self.host)
+                    grafana_api = grafana_utils.connect(
+                        api_token=self.api_token, host=self.host
+                    )
                     try:
-                        r = self.grafana_api.folder.update_folder(
+                        grafana_api.folder.update_folder(
                             uid=self.uid, title=defn.config.title, overwrite=True
                         )
                     except GrafanaClientError:
@@ -134,9 +125,11 @@ class GrafanaFolderState(nixops.resources.ResourceState[GrafanaFolderDefinition]
 
             self.log("Creating folder : '{0}'..".format(defn.config.title))
 
-            self.connect(api_token=defn.config.apiToken, host=defn.config.host)
+            grafana_api = grafana_utils.connect(
+                api_token=defn.config.apiToken, host=defn.config.host
+            )
             try:
-                new_folder = self.grafana_api.folder.create_folder(
+                new_folder = grafana_api.folder.create_folder(
                     title=defn.config.title, uid=defn.config.uid,
                 )
             except GrafanaBadInputError:
@@ -159,9 +152,9 @@ class GrafanaFolderState(nixops.resources.ResourceState[GrafanaFolderDefinition]
         if not self.uid:
             self.state = self.MISSING
             return
-        self.connect(api_token=self.api_token, host=self.host)
+        grafana_api = grafana_utils.connect(api_token=self.api_token, host=self.host)
         try:
-            folder_info = self.grafana_api.folder.get_folder(uid=self.uid)
+            folder_info = grafana_api.folder.get_folder(uid=self.uid)
             if folder_info["uid"] == self.uid:
                 self.state = self.UP
             if folder_info["title"] != self.title:
@@ -179,9 +172,9 @@ class GrafanaFolderState(nixops.resources.ResourceState[GrafanaFolderDefinition]
         return
 
     def _destroy(self):
-        self.connect(api_token=self.api_token, host=self.host)
+        grafana_api = grafana_utils.connect(api_token=self.api_token, host=self.host)
         try:
-            self.grafana_api.folder.delete_folder(uid=self.uid)
+            grafana_api.folder.delete_folder(uid=self.uid)
         except GrafanaClientError:
             self.log("The folder seems to have already been deleted..")
         except Exception:
