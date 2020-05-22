@@ -8,6 +8,7 @@ include = [ "nixops_grafana/nix/*.nix" ]
 
 [tool.poetry.dependencies]
 python = "^3.7.6"
+#grafana-api = {git = "https://github.com/m0nhawk/grafana_api.git", rev = "master"}
 grafana-api = "1.0.2"
 grafanalib = "0.5.6"
 nixops = {git = "https://github.com/NixOS/nixops.git", rev = "master"}
