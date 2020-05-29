@@ -150,9 +150,10 @@ version = "1.8.0"
 PrettyTable = "^0.7.2"
 pluggy = "^0.13.1"
 typeguard = "^2.7.1"
+typing-extensions = "^3.7.4"
 
 [package.source]
-reference = "a12351e4e1cddbf2962ed6501704c1995f8d9c53"
+reference = "68aa76845573a8e6613286a730f0a2c9e394af97"
 type = "git"
 url = "https://github.com/NixOS/nixops.git"
 [[package]]
@@ -258,7 +259,7 @@ doc = ["sphinx-rtd-theme", "sphinx-autodoc-typehints (>=1.2.0)"]
 test = ["pytest", "pytest-cov", "typing-extensions"]
 
 [[package]]
-category = "dev"
+category = "main"
 description = "Backported and Experimental Type Hints for Python 3.5+"
 name = "typing-extensions"
 optional = false
