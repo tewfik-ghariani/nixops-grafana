@@ -2,12 +2,6 @@
 
 import json
 
-from typing import (
-    Optional,
-    List,
-    Union,
-)
-
 from grafana_api.grafana_face import GrafanaFace
 from grafana_api.grafana_api import (
     GrafanaBadInputError,
@@ -38,17 +32,7 @@ import nixops.resources
 from nixops.state import RecordId
 
 from nixops_grafana import grafana_utils
-
-
-class GrafanaDashboardOptions(nixops.resources.ResourceOptions):
-    apiToken: str
-    host: str
-    dashboardId: Optional[int]
-    uid: Optional[str]
-    title: Optional[str]
-    tags: Optional[tuple]
-    folder: Optional[Union[int, nixops.resources.ResourceEval]]
-    template: Optional[str]
+from .types.grafana_dashboard import GrafanaDashboardOptions
 
 
 class GrafanaDashboardDefinition(nixops.resources.ResourceDefinition):

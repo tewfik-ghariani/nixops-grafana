@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from typing import Optional
-
 from grafana_api.grafana_face import GrafanaFace
 from grafana_api.grafana_api import (
     GrafanaBadInputError,
@@ -13,14 +11,7 @@ import nixops.resources
 from nixops.state import RecordId
 
 from nixops_grafana import grafana_utils
-
-
-class GrafanaFolderOptions(nixops.resources.ResourceOptions):
-    apiToken: str
-    host: str
-    title: str
-    folderId: Optional[int]
-    uid: Optional[str]
+from .types.grafana_folder import GrafanaFolderOptions
 
 
 class GrafanaFolderDefinition(nixops.resources.ResourceDefinition):
