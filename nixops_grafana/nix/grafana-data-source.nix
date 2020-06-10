@@ -9,7 +9,7 @@ with lib;
   options = {
 
     name = mkOption {
-      example = "Folder Title;
+      example = "Folder Title";
       type = types.str;
       description = ''
         The name of the folder
