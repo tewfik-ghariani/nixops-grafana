@@ -3,7 +3,7 @@ from typing import Optional
 
 
 class GrafanaFolderOptions(ResourceOptions):
-    apiToken: str
+    auth: str
     host: str
     title: str
     folderId: Optional[int]

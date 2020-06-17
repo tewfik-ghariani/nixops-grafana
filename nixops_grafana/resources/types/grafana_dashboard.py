@@ -9,7 +9,7 @@ from typing import (
 
 
 class GrafanaDashboardOptions(ResourceOptions):
-    apiToken: str
+    auth: str
     host: str
     dashboardId: Optional[int]
     uid: Optional[str]

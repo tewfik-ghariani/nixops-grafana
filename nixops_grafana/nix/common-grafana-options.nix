@@ -3,12 +3,14 @@ with lib;
 {
 
   options = {
-    apiToken = mkOption {
+    auth = mkOption {
       default = "";
       example = "eyJrIjoiT0tTcG1pUlY2RnVKZTFVaDFsNFZXdE9ZWmNrMkZYbk";
       type = types.str;
       description = ''
-        Grafana API Token generated in the 'API Keys' section
+        Authentication code to access Grafana API, can be one of the following :
+          - API Token generated in the 'API Keys' section
+          - username:password basic authentication ( single string separated by a colon )
       '';
     };
 

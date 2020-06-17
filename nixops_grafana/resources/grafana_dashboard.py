@@ -57,7 +57,7 @@ class GrafanaDashboardDefinition(nixops.resources.ResourceDefinition):
 class GrafanaDashboardState(nixops.resources.ResourceState[GrafanaDashboardDefinition]):
     """State of a Grafana Dashboard"""
 
-    api_token = nixops.util.attr_property("apiToken", None)
+    auth = nixops.util.attr_property("auth", None)
     host = nixops.util.attr_property("host", None)
     dashboard_id = nixops.util.attr_property("dashboardId", None, int)
     uid = nixops.util.attr_property("uid", None)
@@ -92,7 +92,7 @@ class GrafanaDashboardState(nixops.resources.ResourceState[GrafanaDashboardDefin
                 raise Exception("Cannot update the uid of a dashboard.")
 
         grafana_api = grafana_utils.connect(
-            api_token=defn.config.apiToken, host=defn.config.host
+            auth=defn.config.auth, host=defn.config.host
         )
         # Update using the json template regardless?
         self.log("Creating/Updating grafana dashboard..")
@@ -146,7 +146,7 @@ class GrafanaDashboardState(nixops.resources.ResourceState[GrafanaDashboardDefin
         self.log("Dashboard created/updated..")
         with self.depl._db:
             self.state = self.UP
-            self.api_token = defn.config.apiToken
+            self.auth = defn.config.auth
             self.host = defn.config.host
             self.dashboard_id = dashboard_info["id"]
             self.uid = dashboard_info["uid"]
@@ -160,7 +160,7 @@ class GrafanaDashboardState(nixops.resources.ResourceState[GrafanaDashboardDefin
         if not self.uid:
             self.state = self.MISSING
             return
-        grafana_api = grafana_utils.connect(api_token=self.api_token, host=self.host)
+        grafana_api = grafana_utils.connect(auth=self.auth, host=self.host)
         try:
             dashboard_info = grafana_api.dashboard.get_dashboard(dashboard_uid=self.uid)
             if dashboard_info["dashboard"]["uid"] == self.uid:
@@ -171,7 +171,7 @@ class GrafanaDashboardState(nixops.resources.ResourceState[GrafanaDashboardDefin
         return
 
     def _destroy(self):
-        grafana_api = grafana_utils.connect(api_token=self.api_token, host=self.host)
+        grafana_api = grafana_utils.connect(auth=self.auth, host=self.host)
         try:
             grafana_api.dashboard.delete_dashboard(dashboard_uid=self.uid)
         except GrafanaClientError:

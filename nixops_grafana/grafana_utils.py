@@ -3,13 +3,22 @@
 from typing import (
     Optional,
     Literal,
+    Union,
+    Tuple,
 )
-
 from grafana_api.grafana_face import GrafanaFace
 
 
 def connect(
-    api_token: str, host: str, protocol: Literal["http", "https"] = "https",
+    auth: str, host: str, protocol: Literal["http", "https"] = "https",
 ):
-    grafana_api = GrafanaFace(auth=api_token, host=host, protocol=protocol)
+    token: Union[Tuple, str]
+    if ":" in auth:
+        # username:password
+        token = tuple(auth.split(":"))
+    else:
+        # API token
+        token = auth
+
+    grafana_api = GrafanaFace(auth=token, host=host, protocol=protocol)
     return grafana_api
