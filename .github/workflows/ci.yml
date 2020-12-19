@@ -16,6 +16,8 @@ jobs:
         run: 'nix-shell --run true'
       - name: Parsing
         run: './ci/check-nix-files.sh'
+        env:
+          NIX_PATH: "nixpkgs=https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz"
   black:
     runs-on: ubuntu-latest
     steps:
@@ -27,6 +29,8 @@ jobs:
         run: 'nix-shell --run true'
       - name: Black
         run: './ci/check-formatting.sh'
+        env:
+          NIX_PATH: "nixpkgs=https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz"
   mypy:
     runs-on: ubuntu-latest
     steps:
@@ -38,6 +42,8 @@ jobs:
         run: 'nix-shell --run true'
       - name: Mypy
         run: './ci/check-mypy.sh'
+        env:
+          NIX_PATH: "nixpkgs=https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz"
   build:
     runs-on: ubuntu-latest
     steps:
@@ -47,3 +53,5 @@ jobs:
         uses: cachix/install-nix-action@v12
       - name: Build
         run: 'nix-build -I nixpkgs=channel:nixos-20.09 --quiet release.nix -A nixops-grafana.x86_64-linux'
+        env:
+          NIX_PATH: "nixpkgs=https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz"
