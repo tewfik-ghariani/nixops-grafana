@@ -10,7 +10,9 @@ from grafana_api.grafana_face import GrafanaFace
 
 
 def connect(
-    auth: str, host: str, protocol: Literal["http", "https"] = "https",
+    auth: str,
+    host: str,
+    protocol: Literal["http", "https"] = "https",
 ):
     token: Union[Tuple, str]
     if ":" in auth:

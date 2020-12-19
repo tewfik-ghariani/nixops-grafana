@@ -118,7 +118,8 @@ class GrafanaFolderState(nixops.resources.ResourceState[GrafanaFolderDefinition]
             )
             try:
                 new_folder = grafana_api.folder.create_folder(
-                    title=defn.config.title, uid=defn.config.uid,
+                    title=defn.config.title,
+                    uid=defn.config.uid,
                 )
             except GrafanaBadInputError:
                 self.log("Creation failed for folder ‘{0}’...".format(defn.name))
