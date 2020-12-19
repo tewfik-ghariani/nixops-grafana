@@ -11,7 +11,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Nix
-        uses: cachix/install-nix-action@v8
+        uses: cachix/install-nix-action@v12
       - name: Prefetch shell.nix
         run: 'nix-shell --run true'
       - name: Parsing
@@ -22,7 +22,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Nix
-        uses: cachix/install-nix-action@v8
+        uses: cachix/install-nix-action@v12
       - name: Prefetch shell.nix
         run: 'nix-shell --run true'
       - name: Black
@@ -33,7 +33,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Nix
-        uses: cachix/install-nix-action@v8
+        uses: cachix/install-nix-action@v12
       - name: Prefetch shell.nix
         run: 'nix-shell --run true'
       - name: Mypy
@@ -44,6 +44,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Nix
-        uses: cachix/install-nix-action@v8
+        uses: cachix/install-nix-action@v12
       - name: Build
-        run: 'nix-build -I nixpkgs=channel:nixos-20.03 --quiet release.nix -A nixops-grafana.x86_64-linux'
+        run: 'nix-build -I nixpkgs=channel:nixos-20.09 --quiet release.nix -A nixops-grafana.x86_64-linux'
