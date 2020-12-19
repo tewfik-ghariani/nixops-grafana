@@ -17,7 +17,7 @@ jobs:
       - name: Parsing
         run: './ci/check-nix-files.sh'
         env:
-          NIX_PATH: "nixpkgs=https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz"
+          NIX_PATH: "nixpkgs=https://github.com/NixOS/nixpkgs/archive/nixos-20.09.tar.gz"
   black:
     runs-on: ubuntu-latest
     steps:
@@ -30,7 +30,7 @@ jobs:
       - name: Black
         run: './ci/check-formatting.sh'
         env:
-          NIX_PATH: "nixpkgs=https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz"
+          NIX_PATH: "nixpkgs=https://github.com/NixOS/nixpkgs/archive/nixos-20.09.tar.gz"
   mypy:
     runs-on: ubuntu-latest
     steps:
@@ -43,7 +43,7 @@ jobs:
       - name: Mypy
         run: './ci/check-mypy.sh'
         env:
-          NIX_PATH: "nixpkgs=https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz"
+          NIX_PATH: "nixpkgs=https://github.com/NixOS/nixpkgs/archive/nixos-20.09.tar.gz"
   build:
     runs-on: ubuntu-latest
     steps:
@@ -54,4 +54,4 @@ jobs:
       - name: Build
         run: 'nix-build -I nixpkgs=channel:nixos-20.09 --quiet release.nix -A nixops-grafana.x86_64-linux'
         env:
-          NIX_PATH: "nixpkgs=https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz"
+          NIX_PATH: "nixpkgs=https://github.com/NixOS/nixpkgs/archive/nixos-20.09.tar.gz"
