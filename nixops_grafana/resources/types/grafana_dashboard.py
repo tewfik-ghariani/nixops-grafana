@@ -10,7 +10,7 @@ from typing import (
 
 class GrafanaDashboardOptions(ResourceOptions):
     auth: str
-    host: str
+    grafanaHost: str
     dashboardId: Optional[int]
     uid: Optional[str]
     title: Optional[str]

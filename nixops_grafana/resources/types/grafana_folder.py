@@ -4,7 +4,7 @@ from typing import Optional
 
 class GrafanaFolderOptions(ResourceOptions):
     auth: str
-    host: str
+    grafanaHost: str
     title: str
     folderId: Optional[int]
     uid: Optional[str]

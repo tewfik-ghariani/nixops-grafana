@@ -14,7 +14,7 @@ with lib;
       '';
     };
 
-    host = mkOption {
+    grafanaHost = mkOption {
       example = "grafana.nixos.com";
       type = types.str;
       description = ''

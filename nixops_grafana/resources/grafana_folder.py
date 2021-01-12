@@ -37,7 +37,7 @@ class GrafanaFolderState(nixops.resources.ResourceState[GrafanaFolderDefinition]
     """State of a Grafana Folder"""
 
     auth = nixops.util.attr_property("auth", None)
-    host = nixops.util.attr_property("host", None)
+    grafana_host = nixops.util.attr_property("grafanaHost", None)
     title = nixops.util.attr_property("title", None)
     folder_id = nixops.util.attr_property("folderId", None, int)
     uid = nixops.util.attr_property("uid", None)
@@ -59,7 +59,7 @@ class GrafanaFolderState(nixops.resources.ResourceState[GrafanaFolderDefinition]
 
     @property
     def resource_id(self):
-        # host + uid
+        # grafana_host + uid
         return self.uid
 
     def create(self, defn, check, allow_reboot, allow_recreate):
@@ -81,7 +81,7 @@ class GrafanaFolderState(nixops.resources.ResourceState[GrafanaFolderDefinition]
                 if self.depl.logger.confirm(
                     "are you sure you want to update the Folder title ?"
                 ):
-                    grafana_api = grafana_utils.connect(auth=self.auth, host=self.host)
+                    grafana_api = grafana_utils.connect(auth=self.auth, host=self.grafana_host)
                     try:
                         grafana_api.folder.update_folder(
                             uid=self.uid, title=defn.config.title, overwrite=True
@@ -114,7 +114,7 @@ class GrafanaFolderState(nixops.resources.ResourceState[GrafanaFolderDefinition]
             self.log("Creating folder : '{0}'..".format(defn.config.title))
 
             grafana_api = grafana_utils.connect(
-                auth=defn.config.auth, host=defn.config.host
+                auth=defn.config.auth, host=defn.config.grafanaHost
             )
             try:
                 new_folder = grafana_api.folder.create_folder(
@@ -129,11 +129,11 @@ class GrafanaFolderState(nixops.resources.ResourceState[GrafanaFolderDefinition]
             with self.depl._db:
                 self.state = self.UP
                 self.auth = defn.config.auth
-                self.host = defn.config.host
+                self.grafana_host = defn.config.grafanaHost
                 self.folder_id = new_folder["id"]
                 self.uid = new_folder["uid"]
                 self.title = new_folder["title"]
-                self.url = self.host + new_folder["url"]
+                self.url = self.grafana_host + new_folder["url"]
 
             self.log("Folder URL is '{0}'.".format(self.url))
 
@@ -141,7 +141,7 @@ class GrafanaFolderState(nixops.resources.ResourceState[GrafanaFolderDefinition]
         if not self.uid:
             self.state = self.MISSING
             return
-        grafana_api = grafana_utils.connect(auth=self.auth, host=self.host)
+        grafana_api = grafana_utils.connect(auth=self.auth, host=self.grafana_host)
         try:
             folder_info = grafana_api.folder.get_folder(uid=self.uid)
             if folder_info["uid"] == self.uid:
@@ -161,7 +161,7 @@ class GrafanaFolderState(nixops.resources.ResourceState[GrafanaFolderDefinition]
         return
 
     def _destroy(self):
-        grafana_api = grafana_utils.connect(auth=self.auth, host=self.host)
+        grafana_api = grafana_utils.connect(auth=self.auth, host=self.grafana_host)
         try:
             grafana_api.folder.delete_folder(uid=self.uid)
         except GrafanaClientError:
