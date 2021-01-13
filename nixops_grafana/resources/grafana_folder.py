@@ -81,7 +81,9 @@ class GrafanaFolderState(nixops.resources.ResourceState[GrafanaFolderDefinition]
                 if self.depl.logger.confirm(
                     "are you sure you want to update the Folder title ?"
                 ):
-                    grafana_api = grafana_utils.connect(auth=self.auth, host=self.grafana_host)
+                    grafana_api = grafana_utils.connect(
+                        auth=self.auth, host=self.grafana_host
+                    )
                     try:
                         grafana_api.folder.update_folder(
                             uid=self.uid, title=defn.config.title, overwrite=True

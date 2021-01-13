@@ -46,6 +46,6 @@ jobs:
       - name: Nix
         uses: cachix/install-nix-action@v12
       - name: Build
-        run: 'nix-build -I nixpkgs=channel:nixos-20.09 --quiet release.nix -A nixops-grafana.x86_64-linux'
+        run: 'nix-build -I nixpkgs=channel:nixos-unstable --quiet release.nix -A nixops-grafana.x86_64-linux'
         env:
           NIX_PATH: "nixpkgs=https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz"
