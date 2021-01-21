@@ -145,7 +145,7 @@ typing-extensions = "^3.7.4"
 type = "git"
 url = "https://github.com/NixOS/nixops.git"
 reference = "master"
-resolved_reference = "ed2868fbc0b5924fcd4a60a8bd32a14fa196381b"
+resolved_reference = "1239ff7fb94bd647ea54d18e7c7da4b81e63f422"
 
 [[package]]
 name = "nose"
