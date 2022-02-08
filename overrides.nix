@@ -8,7 +8,7 @@ self: super: {
     }
   );
 
-  grafana-api = super.grafana-api.overridePythonAttrs (old: {
+  grafana-client = super.grafana-client.overridePythonAttrs (old: {
     postPatch = ''
       substituteInPlace setup.py --replace 'version=get_version()' 'version="${old.version}"'
     '';

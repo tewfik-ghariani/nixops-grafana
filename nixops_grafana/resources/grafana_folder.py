@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from grafana_api.grafana_api import (
+from grafana_client.client import (
     GrafanaBadInputError,
     GrafanaClientError,
 )

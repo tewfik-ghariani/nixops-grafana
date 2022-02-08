@@ -9,43 +9,43 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2.3.4
+        uses: actions/checkout@v2.4.0
       - name: Nix
-        uses: cachix/install-nix-action@v12
+        uses: cachix/install-nix-action@v16
       - name: Parsing
         run: 'find . -name "*.nix" -exec nix-instantiate --parse --quiet {} >/dev/null +'
         env:
-          NIX_PATH: "nixpkgs=channel:nixos-20.09"
+          NIX_PATH: "nixpkgs=channel:nixos-21.11"
   black:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2.3.4
+        uses: actions/checkout@v2.4.0
       - name: Nix
-        uses: cachix/install-nix-action@v12
+        uses: cachix/install-nix-action@v16
       - name: Black
         run: 'nix-shell ./shell.nix --run "black --check ."'
         env:
-          NIX_PATH: "nixpkgs=channel:nixos-20.09"
+          NIX_PATH: "nixpkgs=channel:nixos-21.11"
   mypy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2.3.4
+        uses: actions/checkout@v2.4.0
       - name: Nix
-        uses: cachix/install-nix-action@v12
+        uses: cachix/install-nix-action@v16
       - name: Mypy
         run: 'nix-shell ./shell.nix --run "mypy nixops_grafana"'
         env:
-          NIX_PATH: "nixpkgs=channel:nixos-20.09"
+          NIX_PATH: "nixpkgs=channel:nixos-21.11"
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2.3.4
+        uses: actions/checkout@v2.4.0
       - name: Nix
-        uses: cachix/install-nix-action@v12
+        uses: cachix/install-nix-action@v16
       - name: Build
-        run: 'nix-build -I nixpkgs=channel:nixos-20.09 --quiet release.nix -A nixops-grafana.x86_64-linux'
+        run: 'nix-build -I nixpkgs=channel:nixos-21.11 --quiet release.nix -A nixops-grafana.x86_64-linux'
         env:
-          NIX_PATH: "nixpkgs=channel:nixos-20.09"
+          NIX_PATH: "nixpkgs=channel:nixos-21.11"

@@ -6,7 +6,7 @@ from typing import (
     Union,
     Tuple,
 )
-from grafana_api.grafana_face import GrafanaFace
+from grafana_client import GrafanaApi
 
 
 def connect(
@@ -22,5 +22,5 @@ def connect(
         # API token
         token = auth
 
-    grafana_api = GrafanaFace(auth=token, host=host, protocol=protocol)
+    grafana_api = GrafanaApi(auth=token, host=host, protocol=protocol)
     return grafana_api
